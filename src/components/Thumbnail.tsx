@@ -15,7 +15,7 @@ function Thumbnail({ movie }: ThumbnailProps) {
     ease-out md:h-36 md:min-w-[260px] md:hover:scale-105">
       <Image
         fill
-        alt={movie.title}
+        alt={movie.title || ''}
         className='rounded-sm object-cover md:rounded'
         src={`${baseUrlMedium}${movie.backdrop_path || movie.poster_path}`}
       />
