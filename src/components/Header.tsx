@@ -25,8 +25,11 @@ function Header() {
     <header className={`${isScrolled && "bg-[#141414]"}`}>
       <div className='flex items-center space-x-2 md:space-x-10'>
         <img
+          width={100}
+          height={100}
+          src="https://rb.gy/ulxxee"
+          alt="Logo da empresa - Netflix"
           className='cursor-pointer object-contain'
-          src="https://rb.gy/ulxxee" alt="" width={100} height={100}
         />
 
         <ul className='hidden space-x-4 md:flex'>
@@ -44,8 +47,9 @@ function Header() {
         <BsBellFill className='h-6 w-6' />
         <Link href="/account">
           <img
+            alt="Avatar do usuário"
+            src="https://rb.gy/g1pwyx"
             className='cursor-pointe rounded'
-            src="https://rb.gy/g1pwyx" alt="Avatar"
           />
         </Link>
       </div>
