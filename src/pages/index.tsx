@@ -4,6 +4,7 @@ import Header from '@/components/Header'
 import Banner from '@/components/Banner'
 import requests from '@/utils/requests'
 import { Movie } from '@/@types/typings'
+import Row from '@/components/Row'
 
 interface HomeProps {
   netflixOriginals: Movie[];
@@ -42,12 +43,18 @@ export default function Home({
         {/* Banner */}
         <Banner netflixOriginals={netflixOriginals} />
         <section>
-          {/* Row */}
-          {/* Row */}
-          {/* Row */}
-          {/* Row */}
-          {/* Row */}
-          {/* Row */}
+          <Row title="Trending Now" movies={trendingNow} />
+          <Row title="Top Rated" movies={topRated} />
+          <Row title="Action Thrillers" movies={actionMovies} />
+
+
+          {/* My List components favorites */}
+          {/* {list.length && <Row title="My List" movies={list}/>} */}
+
+          <Row title="Comedies" movies={comedyMovies} />
+          <Row title="Scary Movies" movies={horrorMovies} />
+          <Row title="Romance Movies" movies={romanceMovies} />
+          <Row title="Documentaries" movies={documentaries} />
         </section>
       </main>
 
