@@ -1,8 +1,28 @@
-import React from 'react'
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react'
+import { BsBellFill, BsSearch } from "react-icons/bs";
 
 function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    }
+  }, [])
+
   return (
-    <header>
+    <header className={`${isScrolled && "bg-[#141414]"}`}>
       <div className='flex items-center space-x-2 md:space-x-10'>
         <img
           className='cursor-pointer object-contain'
@@ -17,10 +37,18 @@ function Header() {
           <li className='headerLink'>My List</li>
         </ul>
       </div>
-      <div>
 
+      <div className='flex items-center space-x-4 text-sm font-light'>
+        <BsSearch className='hidden h-6 w-6 sm:inline' />
+        <p className="hidden lg:inline">Kids</p>
+        <BsBellFill className='h-6 w-6' />
+        <Link href="/account">
+          <img
+            className='cursor-pointe rounded'
+            src="https://rb.gy/g1pwyx" alt="Avatar"
+          />
+        </Link>
       </div>
-      Header
     </header>
   )
 }
