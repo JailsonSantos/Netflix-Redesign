@@ -1,15 +1,19 @@
-import Image from 'next/image'
-import { FaPlay } from 'react-icons/fa'
-import { Movie } from '@/@types/typings'
+import Image from 'next/image';
+import { useRecoilState } from 'recoil';
+import { FaPlay } from 'react-icons/fa';
+import { Movie } from '@/@types/typings';
 import { baseUrl } from '@/constants/movie';
-import { BsFillInfoCircleFill } from 'react-icons/bs'
-import React, { useState, useEffect } from 'react'
+import { modalState, movieState } from '@/atoms/modalAtom';
+import React, { useState, useEffect } from 'react';
+import { BsFillInfoCircleFill } from 'react-icons/bs';
 
 interface BannerProps {
   netflixOriginals: Movie[]
 }
 function Banner({ netflixOriginals }: BannerProps) {
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [showModal, setShowModal] = useRecoilState(modalState);
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
 
   useEffect(() => {
     setMovie(
@@ -41,7 +45,13 @@ function Banner({ netflixOriginals }: BannerProps) {
           <FaPlay className='h-4 w-4 text-black md:h-7 md:w-7' />
           Play
         </button>
-        <button className='bannerButton bg-[gray]/70'>
+        <button
+          onClick={() => {
+            setCurrentMovie(movie)
+            setShowModal(true)
+          }}
+          className='bannerButton bg-[gray]/70'
+        >
           More Info
           <BsFillInfoCircleFill
             className='h-5 w-5 md:h-8 md:w-8'

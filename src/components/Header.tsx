@@ -1,8 +1,10 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import useAuth from '@/hooks/useAuth';
+import React, { useEffect, useState } from 'react';
 import { BsBellFill, BsSearch } from "react-icons/bs";
 
 function Header() {
+  const { logout } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -45,13 +47,14 @@ function Header() {
         <BsSearch className='hidden h-6 w-6 sm:inline' />
         <p className="hidden lg:inline">Kids</p>
         <BsBellFill className='h-6 w-6' />
-        <Link href="/account">
-          <img
-            alt="Avatar do usuário"
-            src="https://rb.gy/g1pwyx"
-            className='cursor-pointe rounded'
-          />
-        </Link>
+        {/*  <Link href="/account"> */}
+        <img
+          onClick={logout}
+          alt="Avatar do usuário"
+          src="https://rb.gy/g1pwyx"
+          className='cursor-pointe rounded'
+        />
+        {/*  </Link> */}
       </div>
     </header>
   )
