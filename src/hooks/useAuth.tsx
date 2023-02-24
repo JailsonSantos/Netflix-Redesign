@@ -1,9 +1,9 @@
 import {
   useMemo,
   useState,
+  useEffect,
   useContext,
   createContext,
-  useEffect,
 } from 'react';
 
 import {
@@ -50,13 +50,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Persisting the user
   useEffect(
-    () => onAuthStateChanged(auth, (auth) => {
+    () => onAuthStateChanged(auth, (user) => {
       if (user) {
-        // logged in
+        // Logged in
         setUser(user);
         setLoading(false);
       } else {
-        // not logged in
+        // Not logged in
         setUser(null);
         setLoading(true);
         router.push('/login');
@@ -67,45 +67,51 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function signUp(email: string, password: string) {
     setLoading(true);
 
-    await createUserWithEmailAndPassword(auth, email, password).then((userCredentials) => {
-      setUser(userCredentials.user);
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
 
-      router.push('/');
+        setUser(userCredentials.user);
 
-      setLoading(false);
-    }).catch(error => {
-      alert(error.message);
-    }).finally(() => {
-      setLoading(false);
-    });
+        router.push('/');
+
+        setLoading(false);
+
+      }).catch(error => {
+        alert(error.message);
+      }).finally(() => {
+        setLoading(false);
+      });
   }
 
   async function signIn(email: string, password: string) {
     setLoading(true);
 
-    await signInWithEmailAndPassword(auth, email, password).then((userCredentials) => {
-      setUser(userCredentials.user);
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        setUser(userCredentials.user);
 
-      router.push('/');
+        router.push('/');
 
-      setLoading(false);
-    }).catch(error => {
-      alert(error.message);
-    }).finally(() => {
-      setLoading(false);
-    });
+        setLoading(false);
+
+      }).catch(error => {
+        alert(error.message);
+      }).finally(() => {
+        setLoading(false);
+      });
   }
 
   async function logout() {
     setLoading(true);
 
-    signOut(auth).then(() => {
-      setUser(null);
-    }).catch(error => {
-      alert(error.message);
-    }).finally(() => {
-      setLoading(false);
-    })
+    signOut(auth)
+      .then(() => {
+        setUser(null);
+      }).catch(error => {
+        alert(error.message);
+      }).finally(() => {
+        setLoading(false);
+      })
   }
 
   const memoedValue = useMemo(
@@ -116,7 +122,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       loading,
       logout,
       error,
-    }), [user, loading]);
+    }), [user, loading, error]);
 
   return (
     <AuthContext.Provider value={memoedValue}>
