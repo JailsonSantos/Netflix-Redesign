@@ -9,7 +9,7 @@ const nextConfig = {
       },
     ],
   },
-  transpilePackages: ['next-transpile-modules', '@stripe/firestore-stripe-payments']
+  transpilePackages: ['@stripe/firestore-stripe-payments']
 }
 
 module.exports = nextConfig

@@ -47,14 +47,14 @@ function Header() {
         <BsSearch className='hidden h-6 w-6 sm:inline' />
         <p className="hidden lg:inline">Kids</p>
         <BsBellFill className='h-6 w-6' />
-        {/*  <Link href="/account"> */}
-        <img
-          onClick={logout}
-          alt="Avatar do usuário"
-          src="https://rb.gy/g1pwyx"
-          className='cursor-pointe rounded'
-        />
-        {/*  </Link> */}
+        <Link href="/account">
+          <img
+            /*   onClick={logout} */
+            alt="Avatar do usuário"
+            src="https://rb.gy/g1pwyx"
+            className='cursor-pointe rounded'
+          />
+        </Link>
       </div>
     </header>
   )

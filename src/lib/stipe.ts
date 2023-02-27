@@ -17,6 +17,19 @@ const loadCheckout = async (priceId: string) => {
     .catch((error) => console.log(error.message))
 }
 
-export { loadCheckout }
+const goToBillingPortal = async () => {
+  const instance = getFunctions(app, 'us-central1') // us-central1 é do plugin do stripe, instalado no firebase
+  const functionRef = httpsCallable(
+    instance,
+    "ext-firestore-stripe-payments-createPortalLink"
+  )
 
+  await functionRef({
+    returnUrl: `${window.location.origin}/account`
+  })
+    .then(({ data }: any) => window.location.assign(data.url))
+    .catch(err => console.log(err.message))
+}
+
+export { loadCheckout, goToBillingPortal }
 export default payments

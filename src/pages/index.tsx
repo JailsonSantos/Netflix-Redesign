@@ -11,6 +11,7 @@ import Banner from '@/components/Banner';
 import { Movie } from '@/@types/typings';
 import { modalState } from '@/atoms/modalAtom';
 import { getProducts, Product } from '@stripe/firestore-stripe-payments';
+import useSubscription from '@/hooks/useSubscription';
 
 interface HomeProps {
   netflixOriginals: Movie[];
@@ -38,9 +39,11 @@ export default function Home({
 
   console.log('products: =>', products)
 
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
   const showModal = useRecoilValue(modalState);
-  const subscription = false;
+
+  // const subscription = useSubscription(user);
+  const subscription = true; // Substituir pela linha acima
 
   if (loading || subscription === null) return null;
 
