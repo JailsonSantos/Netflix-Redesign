@@ -3,12 +3,12 @@ import Thumbnail from './Thumbnail';
 import { Movie } from '@/@types/typings';
 import { AiOutlineLeft } from 'react-icons/ai';
 import { AiOutlineRight } from 'react-icons/ai';
+import { DocumentData } from 'firebase/firestore';
 
 interface RowProps {
   title: string;
-  // When using firebase
-  // movies: Movie[] | DocumentData[]
-  movies: Movie[];
+  movies: Movie | DocumentData[] // When using firebase
+  //movies: Movie[];
 }
 
 function Row({ title, movies }: RowProps) {

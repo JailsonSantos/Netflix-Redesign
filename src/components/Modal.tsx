@@ -1,17 +1,18 @@
+import { db } from '@/db/firebase';
 import { BsX } from 'react-icons/bs';
 import useAuth from '@/hooks/useAuth';
 import { FaPlay } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import MuiModal from '@mui/material/Modal';
 import ReactPlayer from 'react-player/lazy';
-import { deleteDoc, doc } from 'firebase/firestore';
+import toast, { Toaster } from 'react-hot-toast';
 import { HiOutlineThumbUp } from 'react-icons/hi';
 import React, { useEffect, useState } from 'react';
 import { Element, Genre, Movie } from '@/@types/typings';
 import { BsVolumeMute, BsVolumeUp } from 'react-icons/bs';
 import { modalState, movieState } from '@/atoms/modalAtom';
 import { AiOutlineCheck, AiOutlinePlus } from 'react-icons/ai';
-import { db } from '@/db/firebase';
+import { collection, deleteDoc, doc, DocumentData, onSnapshot, setDoc } from 'firebase/firestore';
 
 function Modal() {
 
@@ -22,6 +23,25 @@ function Modal() {
   const [movie, setMovie] = useRecoilState(movieState);
   const [addedToList, setAddedToList] = useState(false);
   const [showModal, setShowModal] = useRecoilState(modalState);
+  const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
+
+  const toastAddStyle = {
+    background: 'green',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '16px',
+    borderRadius: '9999px',
+    maxWidth: '1000px'
+  }
+
+  const toastRemoveStyle = {
+    background: '#e50914',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '16px',
+    borderRadius: '9999px',
+    maxWidth: '1000px'
+  }
 
   useEffect(() => {
     if (!movie) return
@@ -51,10 +71,47 @@ function Modal() {
     fetchMovie();
   }, [movie]);
 
+  // Find all the movies in the user's list
+  useEffect(() => {
+    if (user) {
+      return onSnapshot(
+        collection(db, 'customers', user.uid, 'myList'),
+        (snapshot) => setMovies(snapshot.docs)
+      )
+    }
+  }, [db, movie?.id]);
+
+  // Check if the movie is already in the user's list
+  useEffect(
+    () => setAddedToList(
+      movies.findIndex((result) => result.data().id === movie?.id) !== -1
+    ),
+    [movies]
+  );
+
   async function handleList() {
     if (addedToList) {
       await deleteDoc(
         doc(db, "customers", user!.uid, "myList", movie?.id.toString()!)
+      )
+
+      toast(`${movie?.title || movie?.original_name} has been removed from My List`,
+        {
+          duration: 8000,
+          style: toastRemoveStyle,
+        }
+      )
+    } else {
+      await setDoc(
+        doc(db, "customers", user!.uid, "myList", movie?.id.toString()!),
+        { ...movie }
+      )
+
+      toast(`${movie?.title || movie?.original_name} has been added to My List`,
+        {
+          duration: 8000,
+          style: toastAddStyle,
+        }
       )
     }
   }
@@ -70,6 +127,8 @@ function Modal() {
       className='fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden
     overflow-y-scroll rounded-md scrollbar-hide'>
       <>
+
+        <Toaster position="bottom-center" />
         <button onClick={handleClose}
           className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[#181818] hover:bg-[#181818]'>
           <BsX className='h-6 w-6' />

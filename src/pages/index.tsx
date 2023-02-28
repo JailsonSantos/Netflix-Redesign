@@ -9,9 +9,10 @@ import { useRecoilValue } from 'recoil';
 import Header from '@/components/Header';
 import Banner from '@/components/Banner';
 import { Movie } from '@/@types/typings';
-import { modalState } from '@/atoms/modalAtom';
+import { modalState, movieState } from '@/atoms/modalAtom';
 import { getProducts, Product } from '@stripe/firestore-stripe-payments';
 import useSubscription from '@/hooks/useSubscription';
+import useList from '@/hooks/useList';
 
 interface HomeProps {
   netflixOriginals: Movie[];
@@ -41,6 +42,8 @@ export default function Home({
 
   const { loading, user } = useAuth();
   const showModal = useRecoilValue(modalState);
+  const movie = useRecoilValue(movieState);
+  const list = useList(user?.uid);
 
   // const subscription = useSubscription(user);
   const subscription = true; // Substituir pela linha acima
@@ -73,7 +76,7 @@ export default function Home({
 
 
           {/* My List components favorites */}
-          {/* {list.length && <Row title="My List" movies={list}/>} */}
+          {list.length > 0 && <Row title="My List" movies={list} />}
 
           <Row title="Comedies" movies={comedyMovies} />
           <Row title="Scary Movies" movies={horrorMovies} />

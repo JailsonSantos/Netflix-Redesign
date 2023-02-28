@@ -4,11 +4,13 @@ import { useRecoilState } from 'recoil';
 import { Movie } from '@/@types/typings';
 import { baseUrlMedium } from '@/constants/movie';
 import { modalState, movieState } from '@/atoms/modalAtom';
+import { DocumentData } from 'firebase/firestore';
 
 interface ThumbnailProps {
   // When using firebase
-  // movie: Movie | DocumentData
-  movie: Movie
+  movie: Movie | DocumentData
+
+  //movie: Movie
 }
 
 function Thumbnail({ movie }: ThumbnailProps) {
