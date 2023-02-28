@@ -2,6 +2,7 @@ import Link from 'next/link';
 import useAuth from '@/hooks/useAuth';
 import React, { useEffect, useState } from 'react';
 import { BsBellFill, BsSearch } from "react-icons/bs";
+import BasicMenu from './BasicMenu';
 
 function Header() {
   const { logout } = useAuth();
@@ -33,6 +34,8 @@ function Header() {
           alt="Logo da empresa - Netflix"
           className='cursor-pointer object-contain'
         />
+
+        <BasicMenu />
 
         <ul className='hidden space-x-4 md:flex'>
           <li className='headerLink'>Home</li>

@@ -1,26 +1,26 @@
 import { BsX } from 'react-icons/bs';
+import useAuth from '@/hooks/useAuth';
 import { FaPlay } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import MuiModal from '@mui/material/Modal';
 import ReactPlayer from 'react-player/lazy';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { deleteDoc, doc } from 'firebase/firestore';
 import { HiOutlineThumbUp } from 'react-icons/hi';
 import React, { useEffect, useState } from 'react';
 import { Element, Genre, Movie } from '@/@types/typings';
-import { modalState, movieState } from '@/atoms/modalAtom';
 import { BsVolumeMute, BsVolumeUp } from 'react-icons/bs';
-/* 
-import ReactPlayer from 'react-player'
+import { modalState, movieState } from '@/atoms/modalAtom';
+import { AiOutlineCheck, AiOutlinePlus } from 'react-icons/ai';
+import { db } from '@/db/firebase';
 
-// Render a YouTube video player
-<ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
-*/
 function Modal() {
-  //  const [movie, setMovie] = useState<Movie | null>(null);
+
+  const { user } = useAuth();
   const [muted, setMuted] = useState(true);
   const [trailer, setTrailer] = useState("");
   const [genres, setGenres] = useState<Genre[]>([]);
   const [movie, setMovie] = useRecoilState(movieState);
+  const [addedToList, setAddedToList] = useState(false);
   const [showModal, setShowModal] = useRecoilState(modalState);
 
   useEffect(() => {
@@ -51,6 +51,13 @@ function Modal() {
     fetchMovie();
   }, [movie]);
 
+  async function handleList() {
+    if (addedToList) {
+      await deleteDoc(
+        doc(db, "customers", user!.uid, "myList", movie?.id.toString()!)
+      )
+    }
+  }
 
   function handleClose() {
     setShowModal(false);
@@ -86,8 +93,17 @@ function Modal() {
                 Play
               </button>
 
-              <button className='modalButton'>
-                <AiOutlinePlus className='h-7 w-7' />
+              <button
+                onClick={handleList}
+                className='modalButton'
+              >
+                {addedToList ? (
+                  <AiOutlineCheck className='h-7 w-7' />
+
+                ) : (
+                  <AiOutlinePlus className='h-7 w-7' />
+
+                )}
               </button>
 
               <button className='modalButton'>
