@@ -62,6 +62,10 @@
 <h2 align="left" id="status">Status do Projeto</h2>
 <p align="left"> 🚧  React Native 🚀 Versão 1.0 em construção.  🚧.</p>
 
+
+<h2 align="left" id="status">Versão Online</h2>
+- [Link da aplicação](https://netflix-redesign-git-main-jailsonsantos.vercel.app/login)
+
 <h2 align="left" id="autor">🦸 Autor</h2>
 <a href="https://github.com/JailsonSantos">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/11697713?s=96&v=4" width="100px;" alt=""/>
